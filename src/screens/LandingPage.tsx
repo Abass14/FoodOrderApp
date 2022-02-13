@@ -3,10 +3,20 @@ import React, { useEffect, useState } from 'react';
 import Container from '../components/Container';
 import Paragraph from '../components/Paragraph';
 import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps, createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { HOME_PAGE, HOME_STACK } from '../utils/Constants';
 
 const screenWidth = Dimensions.get('screen').width
 
-export function LandingPage() {
+type RootStackParamList = {
+    LandingPage: undefined;
+    HomeScreen: undefined;
+  };
+
+type Props = NativeStackScreenProps<RootStackParamList, 'LandingPage'>;
+
+export function LandingPage({route, navigation}: Props) {
 
     const [errorMsg, setErrorMsg] = useState("");
     const [address, setAddress] = useState<Location.LocationGeocodedAddress>();
@@ -29,6 +39,12 @@ export function LandingPage() {
                     let currentAddress = `${item.name}, ${item.street}, ${item.postalCode}, ${item.country}`;
                     setDisplayAddress(currentAddress);
                     console.log(currentAddress, "current")
+
+                    if(currentAddress?.length > 0){
+                        setTimeout(() => {
+                            navigation.navigate(HOME_PAGE)
+                        }, 1000)
+                    }
                     return;
                 }
             }

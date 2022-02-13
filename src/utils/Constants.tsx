@@ -1,0 +1,7 @@
+export const HOME_PAGE = 'HomeScreen'
+export const HOME_SCREEN_NAV = 'HOME_SCREEN_NAV'
+export const LANDING_PAGE = 'LandingPage'
+export const HOME_STACK = 'Home Screen'
+export const OFFER_STACK = 'Offer Screen'
+export const CART_STACK = 'Cart Screen'
+export const ACCOUNT_STACK = 'Account Screen'

@@ -5,6 +5,7 @@ import { LandingPage } from '../screens/LandingPage';
 import HomeScreen from '../screens/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
+import { HOME_PAGE } from '../utils/Constants';
 
 type StackParam = {
     HomeScreen: undefined
@@ -17,12 +18,17 @@ const HomeStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{
-                headerShown: false  //To remove all default toolbars on all Screens
+                headerShown: false,  //To remove all default toolbars on all Screens
+                header: () => null
             }}
         >
             <Stack.Screen 
-                name='HomeScreen'
+                name={HOME_PAGE}
                 component={HomeScreen}
+                options={{
+                    headerShown: false,
+                    header: () => null
+                }}
             />
         </Stack.Navigator>
       );
@@ -50,18 +56,30 @@ const HomeScreenNav = () => {
         <Tab.Screen
             name='Home Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Offer Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Cart Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Account Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
     </Tab.Navigator>
   );
