@@ -15,6 +15,7 @@ export default function Container(props: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eeeeee'
+        backgroundColor: '#eeeeee',
+        paddingTop: 30
     }
 })
