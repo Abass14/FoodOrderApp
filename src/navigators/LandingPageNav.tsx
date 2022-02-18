@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { LandingPage } from '../screens/LandingPage';
-import HomeScreen from '../screens/HomeScreen';
+import {HomeScreen} from '../screens/HomeScreen';
 import { useNavigation } from '../utils';
 import { HOME_PAGE, HOME_SCREEN_NAV, HOME_STACK, LANDING_PAGE } from '../utils/Constants';
 import HomeScreenNav from './HomeScreenNav';
