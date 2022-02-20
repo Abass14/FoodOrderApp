@@ -2,7 +2,9 @@ import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import React from 'react';
 
 type Props = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    addedPaddingTop?: number | undefined,
+    addedPaddingHorizontal?: number | undefined
 }
 export default function Container(props: Props) {
   return (

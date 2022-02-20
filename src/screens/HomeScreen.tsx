@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import React, { useEffect } from 'react';
 import Container from '../components/Container';
-import { onAvailability, UserState, ApplicationState, ShoppingState, Category, Restaurant, Foods} from '../redux'
+import { onAvailability, onSearchFoods, UserState, ApplicationState, ShoppingState, Category, Restaurant, Foods} from '../redux'
 import { connect } from 'react-redux';
 import SearchBar from '../components/SearchBar';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -25,7 +25,8 @@ interface HomeScreenProps {
     userReducer: UserState,
     shoppingReducer: ShoppingState,
     onAvailability: Function,
-    navigation: Props
+    onSearchFoods: Function,
+    navigation: {navigate: any}
 }
 
 export const _HomeScreen: React.FC<HomeScreenProps> = (props) => {
@@ -34,16 +35,20 @@ export const _HomeScreen: React.FC<HomeScreenProps> = (props) => {
     const { availability } = props.shoppingReducer;
     const { categories, foods, restaurants } = availability;
     const { navigation } = props
+    console.log(navigation, "navigation")
 
     useEffect(() => {
         props.onAvailability(location.postalCode)
+        setTimeout(() => {
+            props.onSearchFoods(location.postalCode)
+        }, 1000)
     }, [])
 
     let foods30 = foods?.filter(food => {
         return food.readyTime === 30;
     } )
 
-    console.log(foods30, "fooooods")
+    // console.log(foods30, "fooooods")
 
     const renderCategory = (item: Category) => {
         return (
@@ -181,4 +186,4 @@ const mapToStateProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer
 })
 
-export const HomeScreen = connect(mapToStateProps, { onAvailability })(_HomeScreen)
+export const HomeScreen = connect(mapToStateProps, { onAvailability, onSearchFoods })(_HomeScreen)

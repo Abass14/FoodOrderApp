@@ -49,5 +49,6 @@ export interface UserState {
 }
 
 export interface ShoppingState {
-    availability: FoodAvailability
+    availability: FoodAvailability;
+    availableFoods: [Foods]
 }

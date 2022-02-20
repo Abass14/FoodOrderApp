@@ -6,7 +6,7 @@ import {HomeScreen} from '../screens/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
 import { FOOD_DETAIL_SCREEN, HOME_PAGE, RESTAURANT_SCREEN, SEARCH_PAGE } from '../utils/Constants';
-import SearchScreen from '../screens/SearchScreen';
+import {SearchScreen} from '../screens/SearchScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
 import FoodDetailsScreen from '../screens/FoodDetailsScreen';
 import { Foods, Restaurant } from '../redux';

@@ -16,7 +16,7 @@ const FoodCard: React.FC<FoodCardProps> = ({addedFontSize, onTap, item, addedWid
     if(item?.images?.length > 0){
         imageIcon = item.images[0]
     }
-  console.log(item.images[0], "<=== Item icon")
+  // console.log(item.images[0], "<=== Item icon")
   return (
     <TouchableOpacity style={style.container} onPress={() => onTap(item)}>
       <Image 

@@ -1,8 +1,9 @@
 import { ShoppingActions } from "../action";
-import { FoodAvailability, ShoppingState } from "../model";
+import { FoodAvailability, ShoppingState, Foods } from "../model";
 
-const initialState : ShoppingState = {
-    availability: {} as FoodAvailability
+const initialState = {
+    availability: {} as FoodAvailability,
+    availableFoods: {} as [Foods]
 }
 
 const ShoppingReducers = (state: ShoppingState = initialState, action: ShoppingActions) => {
@@ -12,6 +13,11 @@ const ShoppingReducers = (state: ShoppingState = initialState, action: ShoppingA
             return {
                 ...state,
                 availability: action.payload
+            }
+        case 'ON_SEARCH_ACTION':
+            return {
+                ...state,
+                availableFoods: action.payload
             }
 
         default:
