@@ -54,6 +54,7 @@ const RestaurantScreen: React.FC<RestaurantScreenProps> = (props) => {
             renderItem={({ item }) => renderAvailableFoods(item)}
             data={availableFoods}
             keyExtractor={(item) => `${item._id}`}
+            style={{marginBottom:330}}
         />
       </View>
     </Container>

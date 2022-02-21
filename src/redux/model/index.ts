@@ -14,7 +14,8 @@ export interface Foods {
     category: string;
     price: number;
     readyTime: number;
-    __v: number
+    __v: number,
+    unit: number
 }
 
 export interface Restaurant {

@@ -22,7 +22,6 @@ export interface FoodSearchAction {
 
 export type ShoppingActions = AvailabilityAction | ShoppingErrorAction | FoodSearchAction
 
-//food/search/5698
 export const onAvailability = (postalCode: string) => {
     return async ( dispatch: Dispatch<ShoppingActions>) => {
         try {

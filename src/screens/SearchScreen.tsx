@@ -55,7 +55,7 @@ const _SearchScreen: React.FC<SearchScreenProps> = (props) => {
           />
         </View>
       </View>
-      <View style={{marginBottom: 50}}>
+      <View style={{marginBottom: 60}}>
         <Text>{searchResultMsg}</Text>
           <FlatList 
               showsVerticalScrollIndicator={false}
