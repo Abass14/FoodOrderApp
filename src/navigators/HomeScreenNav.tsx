@@ -2,12 +2,20 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { LandingPage } from '../screens/LandingPage';
-import HomeScreen from '../screens/HomeScreen';
+import {HomeScreen} from '../screens/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
+import { FOOD_DETAIL_SCREEN, HOME_PAGE, RESTAURANT_SCREEN, SEARCH_PAGE } from '../utils/Constants';
+import {SearchScreen} from '../screens/SearchScreen';
+import RestaurantScreen from '../screens/RestaurantScreen';
+import FoodDetailsScreen from '../screens/FoodDetailsScreen';
+import { Foods, Restaurant } from '../redux';
 
 type StackParam = {
-    HomeScreen: undefined
+    HomeScreen: undefined,
+    SearchScreen: undefined,
+    RestaurantScreen: {item: Restaurant},
+    FoodDetailScreen: {item: Foods}
 }
 
 const Stack = createStackNavigator<StackParam>()
@@ -16,13 +24,43 @@ const Tab = createBottomTabNavigator()
 const HomeStack = () => {
     return (
         <Stack.Navigator
+            initialRouteName={HOME_PAGE}
             screenOptions={{
-                headerShown: false  //To remove all default toolbars on all Screens
+                headerShown: false,  //To remove all default toolbars on all Screens
+                header: () => null
             }}
         >
             <Stack.Screen 
-                name='HomeScreen'
+                name={HOME_PAGE}
                 component={HomeScreen}
+                options={{
+                    headerShown: false,
+                    header: () => null
+                }}
+            />
+            <Stack.Screen
+                name={SEARCH_PAGE}
+                component={SearchScreen}
+                options={{
+                    headerShown: false,
+                    header: () => null
+                }}
+            />
+            <Stack.Screen
+                name={RESTAURANT_SCREEN}
+                component={RestaurantScreen}
+                options={{
+                    headerShown: false,
+                    header: () => null
+                }}
+            />
+            <Stack.Screen
+                name={FOOD_DETAIL_SCREEN}
+                component={FoodDetailsScreen}
+                options={{
+                    headerShown: false,
+                    header: () => null
+                }}
             />
         </Stack.Navigator>
       );
@@ -50,18 +88,30 @@ const HomeScreenNav = () => {
         <Tab.Screen
             name='Home Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Offer Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Cart Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
         <Tab.Screen
             name='Account Screen'
             component={HomeStack}
+            options={{
+                header: () => null
+            }}
         />
     </Tab.Navigator>
   );

@@ -1,18 +1,150 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import React, { useEffect } from 'react';
 import Container from '../components/Container';
+import { onAvailability, onSearchFoods, UserState, ApplicationState, ShoppingState, Category, Restaurant, Foods} from '../redux'
+import { connect } from 'react-redux';
+import SearchBar from '../components/SearchBar';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FOOD_DETAIL_SCREEN, RESTAURANT_SCREEN, SEARCH_PAGE } from '../utils/Constants';
+import ButtonWithIcon from '../components/ButtonWithIcon';
+import Product from '../components/Product';
+import Restaurants from '../components/Restaurants';
+import FoodCard from '../components/FoodCard';
 
-const HomeScreen = () => {
+type RootStackParamList = {
+    LandingPage: undefined;
+    HomeScreen: undefined;
+    SearchScreen: undefined;
+    RestaurantScreen: {item: Restaurant};
+    FoodDetailScreen: {item: Foods}
+  };
+
+type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+
+interface HomeScreenProps {
+    userReducer: UserState,
+    shoppingReducer: ShoppingState,
+    onAvailability: Function,
+    onSearchFoods: Function,
+    navigation: {navigate: any}
+}
+
+export const _HomeScreen: React.FC<HomeScreenProps> = (props) => {
+
+    const { location } = props.userReducer;
+    const { availability } = props.shoppingReducer;
+    const { categories, foods, restaurants } = availability;
+    const { navigation } = props
+    console.log(navigation, "navigation")
+
+    useEffect(() => {
+        props.onAvailability(location.postalCode)
+        setTimeout(() => {
+            props.onSearchFoods(location.postalCode)
+        }, 1000)
+    }, [])
+
+    let foods30 = foods?.filter(food => {
+        return food.readyTime === 30;
+    } )
+
+    // console.log(foods30, "fooooods")
+
+    const renderCategory = (item: Category) => {
+        return (
+            <View style={{width: 80, height: 80, marginRight: 15}}>
+                <Product 
+                    onTap={() => {}}
+                    item={item}
+                    addedWidth={80}
+                    additionalHeight={60}
+                />
+            </View>
+        )
+    }
+
+    const renderRestaurant = (item: Restaurant) => {
+        return (
+            <View style={{width: 250, height: 200, marginRight: 15, marginVertical: 10}}>
+                <Restaurants 
+                    onTap={() => {navigation.navigate(RESTAURANT_SCREEN, {item})}}
+                    item={item}
+                    addedWidth={250}
+                    additionalHeight={170}
+                />
+            </View>
+        )
+    }
+
+    const renderFood = (item: Foods) => {
+        return (
+            <View style={{width: 250, height: 200, marginRight: 15, marginVertical: 10}}>
+                <FoodCard 
+                    onTap={() => {navigation.navigate(FOOD_DETAIL_SCREEN, {item})}}
+                    item={item}
+                    addedWidth={250}
+                    additionalHeight={170}
+                />
+            </View>
+        )
+    }
+
   return (
     <Container>
         <View style={styles.section}>
-            <Text>Header</Text>
+            <View style={{
+                flexDirection: 'row'
+            }}>
+                <Text style={styles.addressText}>{`${location.postalCode}, ${location.street} ${location.city}. ${location.country}`}</Text>
+                <Text>Edit Button</Text>
+            </View>
+            <View style={styles.searchBar}>
+                <Text style={styles.addressText}>Search Bar</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'space-around'}}>
+                    <SearchBar 
+                        addedWidth={'85%'}
+                        onTextChange={() => {}}
+                        didTouch={() => {
+                            navigation.navigate(SEARCH_PAGE)
+                        }}
+                    />
+                    <ButtonWithIcon onTap={() => {}} icon={require('../images/hambar.png')} addedHeight={40} addedWidth={40} />
+                </View>
+            </View>
         </View>
         <View style={styles.sectionCenter}>
-            <Text>Landing Page</Text>
-        </View>
-        <View style={styles.sectionBottom}>
-            <Text>Footer</Text>
+            <ScrollView>
+                <View>
+                    <Text style={{fontSize: 14, color: 'black', marginBottom: 10}}>Categories</Text>
+                </View>
+                <FlatList 
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => renderCategory(item)}
+                    data={categories}
+                    keyExtractor={(item) => `${item.id}`}
+                />
+                <View style={{marginTop: 20}}>
+                    <Text style={styles.restaurantText}>Top Restaurants</Text>
+                </View>
+                <FlatList 
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => renderRestaurant(item)}
+                    data={restaurants}
+                    keyExtractor={(item) => `${item._id}`}
+                />
+                 <View>
+                    <Text style={styles.restaurantText}>30 mins Food</Text>
+                </View>
+                <FlatList 
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => renderFood(item)}
+                    data={foods30}
+                    keyExtractor={(item) => `${item._id}`}
+                />
+            </ScrollView>
         </View>
     </Container>
   );
@@ -21,21 +153,37 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     sectionCenter: {
         flex: 9,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'yellow'
     },
     section: {
         flex: 2,
-        alignItems: 'center',
-        backgroundColor: 'red'
+        alignItems: 'flex-start',
     },
     sectionBottom: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
         backgroundColor: 'cyan'
+    },
+    addressText: {
+        marginEnd: 5,
+        marginBottom: 10
+    },
+    searchBar: {
+        width: '100%',
+        alignSelf: 'center'
+    },
+    restaurantText: {
+        fontSize: 20,
+        color: 'red',
+        fontWeight: '700'
     }
 })
 
-export default HomeScreen;
+// export default HomeScreen;
+
+const mapToStateProps = (state: ApplicationState) => ({
+    userReducer: state.userReducer,
+    shoppingReducer: state.shoppingReducer
+})
+
+export const HomeScreen = connect(mapToStateProps, { onAvailability, onSearchFoods })(_HomeScreen)
