@@ -17,6 +17,10 @@ const FoodDetailCard: React.FC<FoodDetailCardProps> = ({imageHeight, imageWidth,
     if(food?.images?.length > 0){
         imageIcon = food.images[0]
     }
+
+    const didupdateCart = (unit: number) => {
+        food.unit = unit
+    }
   return (
     <TouchableOpacity style={styles.container} onPress={() => onTap(food)}>
       <View style={styles.imageView}>
@@ -33,12 +37,14 @@ const FoodDetailCard: React.FC<FoodDetailCardProps> = ({imageHeight, imageWidth,
             <Text>{food.category.toUpperCase()}</Text>
             <Text>{food.category.toUpperCase()}</Text>
         </View>
-        <View style={{flex: 1, alignItems: 'flex-end', paddingEnd: 10, justifyContent: 'space-around'}}>
+        <View style={{flex: 2, alignItems: 'flex-end', paddingEnd: 10, justifyContent: 'space-around',}}>
             <Text style={{paddingEnd: 15}}>{`$${food.price}`}</Text>
-            <View style={{width: 50}}>
+            <View style={{width: 80}}>
                 <ButtonWithRadius
                     btnHeight={30}
-                    onTap={()=> onAdd}
+                    onAdd={()=> onAdd}
+                    onRemove={() => {}}
+                    unit={1}
                 >
                     Add
                 </ButtonWithRadius>

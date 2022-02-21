@@ -49,8 +49,7 @@ const style = StyleSheet.create({
     },
     text: {
         fontSize: 12,
-        color: 'blue',
-        fontStyle: 'italic',
+        color: 'red',
         fontWeight: 'bold'
       }
 })

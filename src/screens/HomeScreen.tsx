@@ -10,6 +10,7 @@ import ButtonWithIcon from '../components/ButtonWithIcon';
 import Product from '../components/Product';
 import Restaurants from '../components/Restaurants';
 import FoodCard from '../components/FoodCard';
+import SearchBarInput from '../components/SearchBarInput';
 
 type RootStackParamList = {
     LandingPage: undefined;
@@ -101,12 +102,13 @@ export const _HomeScreen: React.FC<HomeScreenProps> = (props) => {
             <View style={styles.searchBar}>
                 <Text style={styles.addressText}>Search Bar</Text>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'space-around'}}>
-                    <SearchBar 
+                    <SearchBarInput 
                         addedWidth={'85%'}
                         onTextChange={() => {}}
                         didTouch={() => {
                             navigation.navigate(SEARCH_PAGE)
                         }}
+                        addedHeight={45}
                     />
                     <ButtonWithIcon onTap={() => {}} icon={require('../images/hambar.png')} addedHeight={40} addedWidth={40} />
                 </View>

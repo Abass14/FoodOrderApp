@@ -48,8 +48,7 @@ const style = StyleSheet.create({
         flex: 1,
         fontSize: 12,
         paddingTop: 5,
-        color: 'blue',
-        fontStyle: 'italic',
+        color: 'red',
         fontWeight: 'bold'
       }
 })

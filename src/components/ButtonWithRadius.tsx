@@ -3,17 +3,46 @@ import React from 'react'
 
 interface ButtonWithRadiusProps {
     children: string;
-    onTap: Function;
     btnHeight: number;
+    onAdd?: any;
+    onRemove?: any;
+    unit: number;
 }
-const ButtonWithRadius: React.FC<ButtonWithRadiusProps> = ({children, onTap, btnHeight}) => {
+const ButtonWithRadius: React.FC<ButtonWithRadiusProps> = ({children, btnHeight, onAdd, onRemove, unit}) => {
+
+  
+
   return (
-    <TouchableOpacity
-        onPress={() => onTap()}
-        style={[styles.btn, {height: btnHeight}]}
-    >
-      <Text style={styles.text}>{children}</Text>
-    </TouchableOpacity>
+    <View>
+      {!unit && unit < 1 ? (
+        <TouchableOpacity
+        onPress={() => onAdd()}
+        style={[styles.btn, {height: btnHeight} ]}
+        >
+          <Text style={styles.text}>{children}</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.optionView}>
+          <TouchableOpacity 
+            style={styles.btnAddRem}
+            onPress={() => onAdd()}
+          >
+            <Text style={{fontSize: 20}}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.countText}>
+            {unit}
+          </Text>
+          <TouchableOpacity 
+            style={styles.btnAddRem}
+            onPress={() => onRemove()}
+          >
+            <Text style={{fontSize: 20}}>+</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
+    </View>
+    
   )
 }
 
@@ -29,6 +58,31 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         fontSize: 14
+    },
+    optionView: {
+      flexDirection: 'row',
+      width: '100%',
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    btnAddRem: {
+      flex: 1,
+      borderColor: 'red',
+      borderWidth: 1,
+      backgroundColor: 'white',
+      borderRadius: 5,
+      height: 30,
+      color: 'red',
+      width: 50,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    countText: {
+      fontSize: 14,
+      color: 'red',
+      flex: 1,
+      textAlign: 'center'
     }
 })
 export default ButtonWithRadius
