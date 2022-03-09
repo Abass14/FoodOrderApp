@@ -46,7 +46,8 @@ export interface UserModel {
 export interface UserState {
     user: UserModel;
     location: LocationGeocodedAddress;
-    error: string | undefined
+    error: string | undefined;
+    cart: [Foods]
 }
 
 export interface ShoppingState {

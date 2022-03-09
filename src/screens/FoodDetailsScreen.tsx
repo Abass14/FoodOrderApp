@@ -1,23 +1,38 @@
-import { View, Text, ImageBackground } from 'react-native'
-import React from 'react'
+import { View, Text, ImageBackground, Alert, BackHandler } from 'react-native'
+import React, { useEffect } from 'react'
 import Container from '../components/Container'
 import ButtonWithIcon from '../components/ButtonWithIcon'
-import { Foods } from '../redux'
+import { ApplicationState, Foods, updateCart, UserState } from '../redux'
 import FoodCard from '../components/FoodCard'
 import FoodDetailCard from '../components/FoodDetailCard'
+import { connect } from 'react-redux'
+import { checkFoodExist } from '../utils'
 
 interface FoodDetailScreenProps {
   navigation: {goBack: Function, navigate: any };
-  route: { params: { item: {} }}
+  route: { params: { item: {} }};
+  userReducer: UserState;
+  updateCart: Function
 }
 
-const FoodDetailsScreen: React.FC<FoodDetailScreenProps> = (props) => {
+const _FoodDetailsScreen: React.FC<FoodDetailScreenProps> = (props) => {
 
   const { goBack } = props.navigation;
   const { params } = props.route;
   const { navigation } = props
   const food = params.item as Foods
-  console.log(food, "params")
+
+  const { cart } = props.userReducer
+
+  const handleBackButton = () => {
+    navigation.goBack()
+     return true;
+  }
+
+  useEffect(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+      return () => backHandler.remove()
+  }, [])
 
   return (
     <Container>
@@ -36,11 +51,23 @@ const FoodDetailsScreen: React.FC<FoodDetailScreenProps> = (props) => {
             </View>
           </ImageBackground>
           <View style={{marginBottom: 10}}>
-            <FoodDetailCard food={food} onTap={() => {}} imageHeight={80} imageWidth={'100%'} />
+            <FoodDetailCard 
+              item={checkFoodExist(food, cart)} 
+              onTap={() => {}} 
+              imageHeight={80} 
+              imageWidth={'100%'}
+              updateCart={props.updateCart}
+            />
           </View>
         </View>
     </Container>
   )
 }
 
+const mapToStateProps = (state: ApplicationState) => ({
+  userReducer: state.userReducer,
+  shoppingReducer: state.shoppingReducer
+})
+
+const FoodDetailsScreen = connect(mapToStateProps, { updateCart })(_FoodDetailsScreen)
 export default FoodDetailsScreen

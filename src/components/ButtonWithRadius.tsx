@@ -11,10 +11,10 @@ interface ButtonWithRadiusProps {
 const ButtonWithRadius: React.FC<ButtonWithRadiusProps> = ({children, btnHeight, onAdd, onRemove, unit}) => {
 
   
-
+  // unit = 0
   return (
     <View>
-      {!unit && unit < 1 ? (
+      {!unit || unit === undefined || unit < 1 ? (
         <TouchableOpacity
         onPress={() => onAdd()}
         style={[styles.btn, {height: btnHeight} ]}
@@ -25,7 +25,7 @@ const ButtonWithRadius: React.FC<ButtonWithRadiusProps> = ({children, btnHeight,
         <View style={styles.optionView}>
           <TouchableOpacity 
             style={styles.btnAddRem}
-            onPress={() => onAdd()}
+            onPress={() => onRemove()}
           >
             <Text style={{fontSize: 20}}>-</Text>
           </TouchableOpacity>
@@ -34,7 +34,7 @@ const ButtonWithRadius: React.FC<ButtonWithRadiusProps> = ({children, btnHeight,
           </Text>
           <TouchableOpacity 
             style={styles.btnAddRem}
-            onPress={() => onRemove()}
+            onPress={() => onAdd()}
           >
             <Text style={{fontSize: 20}}>+</Text>
           </TouchableOpacity>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       backgroundColor: 'white',
       borderRadius: 5,
-      height: 30,
+      height: 40,
       color: 'red',
       width: 50,
       alignItems: 'center',

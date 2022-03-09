@@ -1,17 +1,21 @@
-import { View, Text, ImageBackground, FlatList } from 'react-native'
-import React from 'react'
+import { View, Text, ImageBackground, FlatList, BackHandler } from 'react-native'
+import React, { useEffect } from 'react'
 import Container from '../components/Container'
-import { Foods, Restaurant } from '../redux';
+import { ApplicationState, Foods, Restaurant, updateCart, UserState } from '../redux';
 import ButtonWithIcon from '../components/ButtonWithIcon';
 import FoodDetailCard from '../components/FoodDetailCard';
 import { FOOD_DETAIL_SCREEN } from '../utils/Constants';
+import { checkFoodExist } from '../utils';
+import { connect } from 'react-redux';
 
 interface RestaurantScreenProps {
   navigation: {goBack: Function, navigate: any };
-  route: { params: { item: {}}}
+  route: { params: { item: {}}};
+  userReducer: UserState;
+  updateCart: Function
 }
 
-const RestaurantScreen: React.FC<RestaurantScreenProps> = (props) => {
+const _RestaurantScreen: React.FC<RestaurantScreenProps> = (props) => {
   const { goBack } = props.navigation;
   const { params } = props.route;
   const { navigation } = props
@@ -19,16 +23,29 @@ const RestaurantScreen: React.FC<RestaurantScreenProps> = (props) => {
   const availableFoods = restaurant.foods
   console.log(restaurant, "restaurant")
 
+  const { cart } = props.userReducer
+
+  const handleBackButton = () => {
+    navigation.goBack()
+     return true;
+  }
+
+  useEffect(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+      return () => backHandler.remove()
+  }, [])
+
   const renderAvailableFoods = (item: Foods) => {
     return (
       <View style={{marginVertical: 10}}>
         <FoodDetailCard 
-          food={item}
+          item={checkFoodExist(item, cart)}
           imageHeight={80}
           imageWidth={'100%'}
           onTap={() => {
             navigation.navigate(FOOD_DETAIL_SCREEN, {item})
           }}
+          updateCart={props.updateCart}
         />
       </View>
     )
@@ -61,4 +78,10 @@ const RestaurantScreen: React.FC<RestaurantScreenProps> = (props) => {
   )
 }
 
+const mapToStateProps = (state: ApplicationState) => ({
+  userReducer: state.userReducer,
+  shoppingReducer: state.shoppingReducer
+})
+
+const RestaurantScreen = connect(mapToStateProps, { updateCart })(_RestaurantScreen)
 export default RestaurantScreen

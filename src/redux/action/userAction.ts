@@ -3,6 +3,7 @@ import { LocationGeocodedAddress } from "expo-location";
 import { Dispatch } from "react";
 import { UPDATE_LOCATION, USER_LOCATION } from "../../utils/Constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Foods } from "..";
 
 export interface UpdateLocationAction {
     readonly type: 'UPDATE_LOCATION'
@@ -14,7 +15,12 @@ export interface UserErrorAction {
     payload: any
 }
 
-export type UserAction = UpdateLocationAction | UserErrorAction;
+export interface UpdateCartAction {
+    readonly type: 'ON_UPDATE_CART',
+    payload: Foods
+}
+
+export type UserAction = UpdateLocationAction | UserErrorAction | UpdateCartAction;
 
 
 export const updateLocation = (location: LocationGeocodedAddress) => {
@@ -34,4 +40,14 @@ export const updateLocation = (location: LocationGeocodedAddress) => {
             })
         }
     }
+}
+
+export const updateCart = (item: Foods) => {
+    return async ( dispatch: Dispatch<UserAction>) => {
+        console.log(item, "<=== selected item")
+        dispatch({
+            type: 'ON_UPDATE_CART',
+            payload: item
+        })
+    }    
 }

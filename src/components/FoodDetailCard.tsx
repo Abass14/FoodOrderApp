@@ -4,25 +4,38 @@ import { Foods } from '../redux'
 import ButtonWithRadius from './ButtonWithRadius'
 
 interface FoodDetailCardProps {
-    food: Foods,
+    item: Foods,
     imageHeight: number, 
     imageWidth: string,
     onTap: Function,
     onAdd?: Function
+    updateCart: Function
 }
 
-const FoodDetailCard: React.FC<FoodDetailCardProps> = ({imageHeight, imageWidth, food, onTap, onAdd}) => {
+const FoodDetailCard: React.FC<FoodDetailCardProps> = ({imageHeight, imageWidth, item, onTap, onAdd, updateCart}) => {
 
     let imageIcon: string = '';
-    if(food?.images?.length > 0){
-        imageIcon = food.images[0]
+    if(item?.images?.length > 0){
+        imageIcon = item.images[0]
     }
 
     const didupdateCart = (unit: number) => {
-        food.unit = unit
+        console.log(unit, "<=== the unit")
+        item.unit = unit
+        updateCart(item)
+        console.log(item.unit, "<=== item unit")
+    }
+
+    const addItem = () => {
+        let theUnit = isNaN(item.unit) ? 0 : item.unit
+        didupdateCart(theUnit + 1)
+    }
+    const removeItem = () => {
+        let theUnit = isNaN(item.unit) ? 0 : item.unit
+        didupdateCart(theUnit > 0 ? theUnit - 1 : theUnit)
     }
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onTap(food)}>
+    <TouchableOpacity style={styles.container} onPress={() => onTap(item)}>
       <View style={styles.imageView}>
         <Image source={imageIcon ? {uri: imageIcon} : require('../images/lunch.jpeg')} style={{
             height: imageHeight, 
@@ -33,18 +46,24 @@ const FoodDetailCard: React.FC<FoodDetailCardProps> = ({imageHeight, imageWidth,
       </View>
       <View style={styles.otherDetails}>
         <View style={{flex: 2, justifyContent: 'space-around', paddingStart: 10}}>
-            <Text>{food.name}</Text>
-            <Text>{food.category.toUpperCase()}</Text>
-            <Text>{food.category.toUpperCase()}</Text>
+            <Text>{item.name}</Text>
+            <Text>{item.category.toUpperCase()}</Text>
+            <Text>{item.category.toUpperCase()}</Text>
         </View>
         <View style={{flex: 2, alignItems: 'flex-end', paddingEnd: 10, justifyContent: 'space-around',}}>
-            <Text style={{paddingEnd: 15}}>{`$${food.price}`}</Text>
+            <Text style={{paddingEnd: 15}}>{`$${item.price}`}</Text>
             <View style={{width: 80}}>
                 <ButtonWithRadius
                     btnHeight={30}
-                    onAdd={()=> onAdd}
-                    onRemove={() => {}}
-                    unit={1}
+                    onAdd={()=> {
+                        let theUnit = isNaN(item.unit) ? 0 : item.unit
+                        didupdateCart(theUnit + 1)
+                    }}
+                    onRemove={() => {
+                        let theUnit = isNaN(item.unit) ? 0 : item.unit
+                        didupdateCart(theUnit > 0 ? theUnit - 1 : theUnit);
+                    }}
+                    unit={item.unit}
                 >
                     Add
                 </ButtonWithRadius>

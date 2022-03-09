@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'LandingPage'>;
 interface LandingProps {
     userReducer: UserState,
     updateLocation: Function,
-    navigation: Props
+    navigation: any
 }
 
 export const _LandingPage: React.FC<LandingProps> = (props) => {

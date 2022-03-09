@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Alert, BackHandler } from 'react-native';
 import React, { useEffect } from 'react';
 import Container from '../components/Container';
 import { onAvailability, onSearchFoods, UserState, ApplicationState, ShoppingState, Category, Restaurant, Foods} from '../redux'
@@ -48,6 +48,28 @@ export const _HomeScreen: React.FC<HomeScreenProps> = (props) => {
     let foods30 = foods?.filter(food => {
         return food.readyTime === 30;
     } )
+
+    const handleBackButton = () => {
+        Alert.alert(
+            'Exit App',
+            'Exiting the application?', [{
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            }, {
+                text: 'OK',
+                onPress: () => BackHandler.exitApp()
+            }, ], {
+                cancelable: false
+            }
+         )
+         return true;
+    }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+        return () => backHandler.remove()
+    }, [])
 
     // console.log(foods30, "fooooods")
 

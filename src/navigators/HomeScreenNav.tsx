@@ -10,6 +10,7 @@ import {SearchScreen} from '../screens/SearchScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
 import FoodDetailsScreen from '../screens/FoodDetailsScreen';
 import { Foods, Restaurant } from '../redux';
+import CartScreen from '../screens/CartScreen';
 
 type StackParam = {
     HomeScreen: undefined,
@@ -101,7 +102,7 @@ const HomeScreenNav = () => {
         />
         <Tab.Screen
             name='Cart Screen'
-            component={HomeStack}
+            component={CartScreen}
             options={{
                 header: () => null
             }}

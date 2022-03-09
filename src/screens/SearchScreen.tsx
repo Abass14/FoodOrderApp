@@ -1,17 +1,20 @@
-import { View, Text, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, FlatList, BackHandler } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { ApplicationState, Foods, ShoppingState } from '../redux'
+import { ApplicationState, Foods, ShoppingState, updateCart, UserState } from '../redux'
 import Container from '../components/Container'
 import ButtonWithIcon from '../components/ButtonWithIcon'
 import SearchBarInput from '../components/SearchBarInput'
 import { ScrollView } from 'react-native-gesture-handler'
 import FoodDetailCard from '../components/FoodDetailCard'
 import { FOOD_DETAIL_SCREEN } from '../utils/Constants'
+import { checkFoodExist } from '../utils'
 
 interface SearchScreenProps {
   shoppingReducer: ShoppingState;
-  navigation: { navigate: any, goBack: Function }
+  navigation: { navigate: any, goBack: Function };
+  userReducer: UserState;
+  updateCart: Function
 }
 
 const _SearchScreen: React.FC<SearchScreenProps> = (props) => {
@@ -23,18 +26,35 @@ const _SearchScreen: React.FC<SearchScreenProps> = (props) => {
   
   const { availableFoods } = props.shoppingReducer;
   const {navigate, goBack} = props.navigation
-  console.log(availableFoods, "<=== Available foods")
+
+  const { cart } = props.userReducer;
+  console.log(cart, "<-==== cart")
+
+  // availableFoods.forEach((food) => {
+  //   console.log(food.unit, "<===== unit")
+  // })
+  
+  const handleBackButton = () => {
+      goBack()
+     return true;
+  }
+
+  useEffect(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+      return () => backHandler.remove()
+  }, [])
 
   const renderFoods = (item: Foods) => {
     return (
       <View style={{marginTop: 20}}>
          <FoodDetailCard
-          food={item}
+          item={checkFoodExist(item, cart)}
           imageHeight={80}
           imageWidth={'100%'}
           onTap={() => {
             navigate(FOOD_DETAIL_SCREEN, {item})
           }}
+          updateCart={props.updateCart}
         />
       </View>
     )
@@ -79,4 +99,4 @@ const mapToStateProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer
 })
 
-export const SearchScreen = connect(mapToStateProps, { })(_SearchScreen)
+export const SearchScreen = connect(mapToStateProps, { updateCart })(_SearchScreen)
